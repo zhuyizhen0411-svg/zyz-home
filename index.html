@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="朱羿蓁的个人主页——数字金融、收入分配与实证研究">
+<title>朱羿蓁｜个人主页</title>
+<!--
+  ==========================================================
+  这是你的个人主页，全部内容都在这一个文件里。
+  想改文字：找下面写着「改这里」的注释，改中文即可。
+  不要动 < > 里的英文，也不要删掉 </ 开头的结尾标签。
+  ==========================================================
+-->
+<style>
+  :root{
+    /* 颜色 */
+    --paper:#F7F5EF;
+    --paper-2:#F0EDE4;
+    --card:#FFFFFF;
+    --ink:#14110F;
+    --ink-2:#4A463F;
+    --muted:#6F6A5E;
+    --line:#E3DFD4;
+    --line-2:#D5D0C2;
+    --accent:#6344E8;
+    --accent-2:#8B7BF0;
+    --accent-soft:#EDE9FC;
+    --accent-line:rgba(99,68,232,.3);
+    /* 几块柔和的颜色，用来做卡片底 */
+    --lav:#DCD3F7;
+    --sage:#DCE5C6;
+    --peach:#F7C4A6;
+    --cream:#F8E9B4;
+
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+    --serif:Georgia,"Songti SC","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans SC",sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.9;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent-soft);color:var(--accent)}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%}
+
+  .shell{max-width:1120px;margin:0 auto;padding:0 40px}
+  .spark{width:18px;height:18px;flex:none;color:var(--accent)}
+
+  /* ===================== 顶部导航 ===================== */
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;gap:24px;
+    padding:26px 0;
+  }
+  .brand{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:700;letter-spacing:.01em}
+  .brand .spark{width:20px;height:20px}
+  .nav-links{list-style:none;display:flex;gap:34px;margin:0;padding:0}
+  .nav-links a{
+    font-size:14.5px;color:var(--ink-2);
+    transition:color .16s ease;
+  }
+  .nav-links a:hover{color:var(--accent)}
+
+  /* ===================== 首屏 ===================== */
+  .hero{
+    display:grid;grid-template-columns:1.05fr .95fr;
+    gap:56px;align-items:center;
+    padding:56px 0 84px;
+    border-top:1px solid var(--line);
+  }
+  .eyebrow{
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 26px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--accent);flex:none}
+
+  h1{
+    font-size:clamp(34px,5.2vw,56px);
+    font-weight:800;line-height:1.24;letter-spacing:-.01em;
+    margin:0 0 28px;
+  }
+  h1 em{font-style:normal;color:var(--accent)}
+
+  .lede{margin:0 0 10px;color:var(--ink-2);font-size:16px;line-height:1.95;max-width:40ch}
+  .lede:last-of-type{margin-bottom:0}
+
+  /* 首屏右侧的纸片视觉 */
+  .hero-art{position:relative;display:flex;align-items:center;justify-content:center;min-height:400px;padding:22px 0}
+  .art-block{
+    position:absolute;left:5%;right:5%;top:4%;bottom:4%;
+    background:var(--lav);border-radius:26px;
+  }
+  .art-ring{position:absolute;inset:0;margin:auto;width:76%;height:auto;color:#A99BE8;opacity:.75}
+  .paper{
+    position:relative;z-index:2;width:84%;
+    background:var(--card);border-radius:14px;
+    padding:30px 28px 22px;
+    transform:rotate(-3deg);
+    box-shadow:0 24px 48px -22px rgba(20,17,15,.34),0 3px 10px rgba(20,17,15,.06);
+  }
+  .paper-kicker{
+    font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:20px;
+  }
+  .paper-title{font-size:21px;font-weight:700;line-height:1.5;margin:0 0 12px;letter-spacing:-.01em}
+  .paper-sub{font-size:13.5px;color:var(--ink-2);margin:0 0 22px}
+  .paper-foot{
+    display:flex;justify-content:space-between;gap:12px;
+    border-top:1px solid var(--line);padding-top:12px;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--muted);
+  }
+  .art-chip{
+    position:absolute;z-index:3;
+    display:flex;align-items:center;gap:8px;
+    background:var(--card);border:1px solid var(--line);
+    border-radius:999px;padding:9px 16px;
+    font-size:12.5px;color:var(--ink-2);white-space:nowrap;
+    box-shadow:0 12px 24px -14px rgba(20,17,15,.35);
+  }
+  .art-chip .spark{width:13px;height:13px}
+  .chip-a{top:8px;left:-4px}
+  .chip-b{bottom:14px;right:-6px}
+
+  /* ===================== 跑马灯 ===================== */
+  .marquee{
+    overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:16px 0;
+  }
+  .track{display:flex;width:max-content;animation:slide 34s linear infinite}
+  .track span{
+    font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-2);padding:0 26px;white-space:nowrap;
+  }
+  .track i{color:var(--accent);font-style:normal;padding:0;letter-spacing:0}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){
+    .track{animation:none}
+    html{scroll-behavior:auto}
+  }
+
+  /* ===================== 分区通用 ===================== */
+  section{padding:96px 0 0;scroll-margin-top:20px}
+  .head{
+    display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:start;
+  }
+  h2{
+    font-size:clamp(26px,3.6vw,38px);
+    font-weight:800;line-height:1.36;letter-spacing:-.01em;
+    margin:0;
+  }
+  h2 em{font-style:normal;color:var(--accent)}
+  .head p{margin:0;color:var(--ink-2);font-size:15.5px;line-height:1.95}
+  .head p + p{margin-top:14px}
+
+  /* 三栏细线网格 */
+  .trio{
+    display:grid;grid-template-columns:repeat(3,1fr);
+    border-top:1px solid var(--line-2);
+    margin-top:60px;
+  }
+  .trio > div{padding:38px 34px 6px;border-left:1px solid var(--line-2)}
+  .trio > div:first-child{border-left:0;padding-left:0}
+  .trio > div:last-child{padding-right:0}
+  .num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--muted)}
+  .trio svg{width:22px;height:22px;color:var(--accent);display:block;margin:22px 0 20px}
+  .trio h3{font-size:17px;font-weight:700;margin:0 0 10px;letter-spacing:-.01em}
+  .trio p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.9}
+
+  /* ===================== 作品：大纸片 ===================== */
+  .stage{
+    margin-top:60px;position:relative;
+    background:var(--paper-2);border-radius:24px;
+    padding:64px 40px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .stage .paper{width:min(560px,100%);transform:rotate(-1.4deg);padding:38px 36px 26px}
+  .stage .paper-title{font-size:24px;line-height:1.48}
+  .stage .paper-sub{font-size:14.5px}
+
+  /* ===================== 近期关注 ===================== */
+  .stat{
+    margin-top:56px;
+    background:var(--lav);border-radius:24px;
+    display:grid;grid-template-columns:.92fr 1.08fr;
+    overflow:hidden;
+  }
+  .stat-figure{
+    padding:48px 44px;
+    display:flex;flex-direction:column;justify-content:space-between;gap:30px;
+    border-right:1px solid rgba(20,17,15,.16);
+  }
+  .stat-figure b{
+    display:block;
+    font-size:clamp(76px,10vw,142px);
+    line-height:.86;letter-spacing:-.055em;font-weight:800;
+  }
+  .stat-cap{font-size:13px;line-height:1.75;color:rgba(20,17,15,.72);max-width:24ch}
+  .stat-body{
+    padding:48px 44px;
+    background:rgba(255,255,255,.44);
+    display:flex;flex-direction:column;justify-content:center;
+  }
+  .stat-body h3{
+    font-size:clamp(19px,2.1vw,25px);font-weight:700;
+    line-height:1.55;letter-spacing:-.01em;margin:0 0 20px;
+  }
+  .stat-body p{margin:0;font-size:15px;line-height:1.95;color:var(--ink-2)}
+  .stat-body a{
+    margin-top:26px;width:max-content;max-width:100%;
+    font-size:13.5px;font-weight:600;color:var(--accent);
+    border-bottom:1px solid var(--accent-line);padding-bottom:4px;
+    transition:border-color .16s ease;
+  }
+  .stat-body a:hover{border-bottom-color:var(--accent)}
+
+  .ask{display:grid;grid-template-columns:186px 1fr;gap:48px;margin-top:66px}
+  .ask-label{
+    margin:0;font-size:13px;letter-spacing:.1em;
+    color:var(--muted);line-height:1.7;
+  }
+  .ask ol{list-style:none;margin:0;padding:0}
+  .ask li{
+    display:flex;gap:22px;align-items:baseline;
+    border-top:1px solid var(--line-2);
+    padding:24px 0;margin:0;
+    font-size:clamp(18px,2vw,24px);font-weight:700;
+    line-height:1.5;letter-spacing:-.01em;
+  }
+  .ask li:last-child{border-bottom:1px solid var(--line-2)}
+  .ask li span{
+    flex:none;font-family:var(--mono);font-size:11.5px;
+    font-weight:400;letter-spacing:.1em;color:var(--accent);
+  }
+
+  /* ===================== 技能 ===================== */
+  .tags{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0;padding:0}
+  .tags li{
+    font-size:12px;font-family:var(--mono);letter-spacing:.04em;
+    color:var(--accent);background:var(--accent-soft);
+    border-radius:999px;padding:5px 13px;
+  }
+
+  /* ===================== 教育经历 ===================== */
+  .edu{margin-top:60px;border-top:1px solid var(--line-2)}
+  .edu-row{
+    display:grid;grid-template-columns:190px 1fr;gap:40px;
+    padding:34px 0;border-bottom:1px solid var(--line);
+    align-items:baseline;
+  }
+  .edu-year{font-family:var(--mono);font-size:12.5px;letter-spacing:.1em;color:var(--muted)}
+  .edu-row h3{font-size:19px;font-weight:700;margin:0 0 8px;letter-spacing:-.01em}
+  .edu-row p{margin:0;color:var(--ink-2);font-size:15px}
+
+  /* ===================== 爱好卡片 ===================== */
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:60px}
+  .card{display:block}
+  .thumb{
+    aspect-ratio:5/4;border-radius:18px;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+    border:1px solid rgba(20,17,15,.06);
+  }
+  .thumb svg{width:48px;height:48px;color:var(--ink);opacity:.8;position:relative;z-index:1}
+  .thumb.lav{background:var(--lav)}
+  .thumb.sage{background:var(--sage)}
+  .thumb.peach{background:var(--peach)}
+  .thumb::after{
+    content:"";position:absolute;inset:0;
+    background-image:radial-gradient(rgba(20,17,15,.14) 1px, transparent 1px);
+    background-size:14px 14px;opacity:.32;
+  }
+  .kicker{
+    font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);margin:22px 0 8px;
+  }
+  .card h3{font-size:17px;font-weight:700;margin:0 0 8px;letter-spacing:-.01em}
+  .card p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.9}
+
+  /* ===================== 页脚 ===================== */
+  footer{
+    margin-top:104px;border-top:1px solid var(--line-2);
+    padding:34px 0 46px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);
+  }
+  footer .spark{width:16px;height:16px}
+
+  /* ===================== 手机上 ===================== */
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr;gap:44px;padding:36px 0 64px}
+    .hero-art{min-height:330px;order:2}
+    .head{grid-template-columns:1fr;gap:26px}
+    .nav-links{gap:22px}
+  }
+  @media (max-width:680px){
+    .shell{padding:0 20px}
+    .nav{padding:20px 0}
+    .nav-links{gap:13px}
+    .nav-links a{font-size:12.5px}
+    .brand{font-size:15.5px}
+    .stat{grid-template-columns:1fr;border-radius:18px}
+    .stat-figure{border-right:0;border-bottom:1px solid rgba(20,17,15,.16);padding:34px 26px;gap:18px}
+    .stat-body{padding:30px 26px}
+    .ask{grid-template-columns:1fr;gap:16px;margin-top:44px}
+    .ask li{gap:16px;padding:20px 0}
+    section{padding-top:68px}
+    .trio{grid-template-columns:1fr;margin-top:44px}
+    .trio > div{
+      border-left:0;border-top:1px solid var(--line);
+      padding:26px 0 4px;
+    }
+    .trio > div:first-child{border-top:0;padding-top:0}
+    .trio svg{margin:16px 0 14px}
+    .stage{margin-top:44px;padding:40px 18px;border-radius:18px}
+    .stage .paper{padding:28px 22px 20px;transform:none}
+    .stage .paper-title{font-size:19px}
+    .edu{margin-top:44px}
+    .edu-row{grid-template-columns:1fr;gap:8px;padding:26px 0}
+    .cards{grid-template-columns:1fr;gap:32px;margin-top:44px}
+    .thumb{aspect-ratio:16/9}
+    .art-chip{font-size:11.5px;padding:8px 13px}
+    .chip-a{left:-6px}
+    .chip-b{right:-6px}
+    footer{margin-top:72px;flex-direction:column;align-items:flex-start;gap:14px}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ==================== 顶部导航 ==================== -->
+  <nav class="nav">
+    <a class="brand" href="#top">
+      <svg class="spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true">
+        <path d="M12 2.5v19M2.5 12h19M5.3 5.3l13.4 13.4M18.7 5.3 5.3 18.7"/>
+      </svg>
+      <!-- 改这里：左上角的名字 -->
+      朱羿蓁
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">简介</a></li>
+      <li><a href="#work">作品</a></li>
+      <li><a href="#watch">关注</a></li>
+      <li><a href="#skills">技能</a></li>
+      <li><a href="#edu">教育</a></li>
+      <li><a href="#life">生活</a></li>
+    </ul>
+  </nav>
+
+  <!-- ==================== 首屏 ==================== -->
+  <header class="hero" id="top">
+    <div>
+      <!-- 改这里：最上面那行英文小字 -->
+      <p class="eyebrow">Economics · Digital Finance</p>
+      <!-- 改这里：大标题，<em> 里的字会变成紫色 -->
+      <h1>从数据出发，<br>把问题<em>问清楚</em>。</h1>
+      <!-- 改这里：三行自我介绍 -->
+      <p class="lede">我是朱羿蓁，经济学硕士在读，本科毕业于中央财经大学金融学院。</p>
+      <p class="lede">关注数字金融与收入分配，习惯先把现象看清楚，再想用什么模型把它说明白。</p>
+    </div>
+
+    <!-- 右侧：论文纸片 -->
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-block"></div>
+      <svg class="art-ring" viewBox="0 0 300 300" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="3 7" aria-hidden="true">
+        <circle cx="150" cy="150" r="146"/>
+      </svg>
+      <article class="paper">
+        <div class="paper-kicker">Undergraduate Thesis / 2026</div>
+        <!-- 改这里：论文标题 -->
+        <h3 class="paper-title">数字普惠金融对<br>城乡收入差距的影响</h3>
+        <p class="paper-sub">——基于收入来源的路径分析</p>
+        <div class="paper-foot">
+          <span>中央财经大学 · 金融学院</span>
+          <span>2011–2023</span>
+        </div>
+      </article>
+      <!-- 改这里：两个浮动小标签 -->
+      <div class="art-chip chip-a">
+        <svg class="spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true">
+          <path d="M12 2.5v19M2.5 12h19M5.3 5.3l13.4 13.4M18.7 5.3 5.3 18.7"/>
+        </svg>
+        省级面板数据
+      </div>
+      <div class="art-chip chip-b">两条传导路径</div>
+    </div>
+  </header>
+
+  <!-- ==================== 关键词跑马灯 ==================== -->
+  <div class="marquee" aria-hidden="true">
+    <div class="track">
+      <!-- 改这里：滚动的关键词，改一遍就行，下面那组是复制用来自动接上的 -->
+      <span>数字普惠金融</span><span><i>✳</i></span>
+      <span>城乡收入差距</span><span><i>✳</i></span>
+      <span>面板数据</span><span><i>✳</i></span>
+      <span>中介效应</span><span><i>✳</i></span>
+      <span>共同富裕</span><span><i>✳</i></span>
+      <span>数字普惠金融</span><span><i>✳</i></span>
+      <span>城乡收入差距</span><span><i>✳</i></span>
+      <span>面板数据</span><span><i>✳</i></span>
+      <span>中介效应</span><span><i>✳</i></span>
+      <span>共同富裕</span><span><i>✳</i></span>
+    </div>
+  </div>
+
+  <!-- ==================== 01 简介 ==================== -->
+  <section id="about">
+    <div class="head">
+      <div>
+        <p class="eyebrow">01 / About</p>
+        <!-- 改这里：分区大标题 -->
+        <h2>研究这件事，<br>我喜欢从<em>数据</em>开始。</h2>
+      </div>
+      <div>
+        <!-- 改这里：右侧说明，两段 -->
+        <p>我是经济学院研一学生，方向为投资银行。本科在中央财经大学金融学院读金融学，现在把重心放在经济学理论与实证研究方法上。</p>
+        <p>比起先下结论，我更愿意先看数据长什么样：把时间序列画出来，把分布摊开，让现象自己说话。</p>
+      </div>
+    </div>
+
+    <div class="trio">
+      <div>
+        <div class="num">01</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 20h18M6 20V10M11 20V4M16 20v-7M21 20v-4"/>
+        </svg>
+        <!-- 改这里：三条关注方向 -->
+        <h3>从数据出发</h3>
+        <p>先做描述性分析，看清趋势与结构，再决定该用什么模型。</p>
+      </div>
+      <div>
+        <div class="num">02</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/>
+        </svg>
+        <h3>把机制说清</h3>
+        <p>不满足于「有没有影响」，更想知道「通过什么路径产生影响」。</p>
+      </div>
+      <div>
+        <div class="num">03</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3l2.6 5.7 6.2.7-4.6 4.2 1.3 6.1L12 16.8 6.5 19.7l1.3-6.1L3.2 9.4l6.2-.7z"/>
+        </svg>
+        <h3>结论要稳</h3>
+        <p>换模型、换样本、换口径，结论都站得住，才敢写进论文里。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 02 作品 ==================== -->
+  <section id="work">
+    <div class="head">
+      <div>
+        <p class="eyebrow">02 / Thesis</p>
+        <h2>一篇论文，<br>回答一个<em>真问题</em>。</h2>
+      </div>
+      <div>
+        <!-- 改这里：作品的说明文字 -->
+        <p>本科毕业论文研究的是：数字普惠金融的发展，究竟有没有缩小城乡收入差距？如果有，是通过什么路径起作用的？</p>
+        <p>数据、方法、结论都来自这篇论文本身，没有夸大。</p>
+        <ul class="tags">
+          <li>省级面板数据</li>
+          <li>双向固定效应</li>
+          <li>中介效应 / Bootstrap</li>
+          <li>八大经济区域异质性</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stage">
+      <article class="paper">
+        <div class="paper-kicker">Selected Work / 2026</div>
+        <h3 class="paper-title">数字普惠金融对城乡收入差距的影响</h3>
+        <p class="paper-sub">——基于收入来源的路径分析</p>
+        <div class="paper-foot">
+          <span>中央财经大学 · 金融学院</span>
+          <span>2011–2023</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="trio">
+      <div>
+        <div class="num">01</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16"/>
+        </svg>
+        <h3>十四年省级数据</h3>
+        <p>用 2011–2023 年的省级面板数据，在控制产业结构、政府干预等变量后，结论依然稳健。</p>
+      </div>
+      <div>
+        <div class="num">02</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="6" cy="6" r="2.6"/><circle cx="18" cy="18" r="2.6"/><path d="M8.2 7.6 15.8 16.4"/>
+        </svg>
+        <h3>两条传导路径</h3>
+        <p>就业结构优化带来的「转移增收」，与农业劳动生产率提升带来的「原位增效」。</p>
+      </div>
+      <div>
+        <div class="num">03</div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3l7 3v6c0 4.2-2.9 7.6-7 9-4.1-1.4-7-4.8-7-9V6z"/><path d="M9 12l2 2 4-4"/>
+        </svg>
+        <h3>把因果做扎实</h3>
+        <p>用滞后一期的中介变量构建动态模型，阻断反向因果；再按地区与指数维度做颗粒化拆解。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 03 近期关注 ==================== -->
+  <section id="watch">
+    <div class="head">
+      <div>
+        <p class="eyebrow">03 / Watching</p>
+        <!-- 改这里：这一块的大标题 -->
+        <h2>相对差距在收敛，<br><em>绝对</em>鸿沟却在扩大。</h2>
+      </div>
+      <div>
+        <!-- 改这里：说明文字 -->
+        <p>这是写毕业论文时最让我放不下的一组对比：收入比一路走低，可两边口袋里的钱，差得越来越多。</p>
+        <p>论文写完了，这个问题我还想接着往下追。</p>
+      </div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-figure">
+        <!-- 改这里：那个大数字 -->
+        <b>2.31</b>
+        <div class="stat-cap">2025 年城乡居民人均可支配收入比（以农村居民收入为 1）</div>
+      </div>
+      <div class="stat-body">
+        <!-- 改这里：数字的解释 -->
+        <h3>收入比从 2.56 降到 2.31，绝对差额却在同期被拉开。</h3>
+        <p>国家统计局数据：2025 年城镇居民人均可支配收入 56502 元，农村居民 24456 元。相对差距确实在收窄——但只看绝对数，两者相差约 3.2 万元，比 2020 年的约 2.67 万元又多出了一截。</p>
+        <!-- 改这里：换成你想引用的官方出处 -->
+        <a href="https://www.stats.gov.cn/sj/sjjd/202606/t20260604_1963891.html" target="_blank" rel="noreferrer">查看国家统计局原文 ↗</a>
+      </div>
+    </div>
+
+    <div class="ask">
+      <p class="ask-label">接下来想继续追问</p>
+      <ol>
+        <!-- 改这里：你真正想知道答案的问题 -->
+        <li><span>01</span>数字化程度提高，会不会给一部分人竖起新的门槛？</li>
+        <li><span>02</span>工资性、经营性与财产性收入，哪条路径更值得往下挖？</li>
+        <li><span>03</span>不同地区需要的普惠金融工具，应该是同一套吗？</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ==================== 04 技能 ==================== -->
+  <section id="skills">
+    <div class="head">
+      <div>
+        <p class="eyebrow">04 / Skills</p>
+        <h2>工具是手段，<br><em>问题</em>才是目的。</h2>
+      </div>
+      <div>
+        <!-- 改这里：技能说明，不会的别写，老师看得出来 -->
+        <p>这些是我在写论文的过程中真正用过、并且能讲清楚原理的方法和工具。</p>
+      </div>
+    </div>
+
+    <div class="trio">
+      <div>
+        <div class="num">01</div>
+        <h3>计量与实证</h3>
+        <p>OLS 回归、面板数据双向固定效应模型、中介效应与 Bootstrap 检验、内生性处理。</p>
+      </div>
+      <div>
+        <div class="num">02</div>
+        <h3>数据处理</h3>
+        <p>Python（数据清洗、整理与图表绘制）、Excel。</p>
+      </div>
+      <div>
+        <div class="num">03</div>
+        <h3>研究能力</h3>
+        <p>文献检索与综述、指标体系构建、区域异质性分析。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 05 教育经历 ==================== -->
+  <section id="edu">
+    <div class="head">
+      <div>
+        <p class="eyebrow">05 / Education</p>
+        <h2>读过的书，<br>走过的<em>路</em>。</h2>
+      </div>
+    </div>
+
+    <div class="edu">
+      <div class="edu-row">
+        <div class="edu-year">2026 — 至今</div>
+        <div>
+          <!-- 改这里：硕士的学校名称（你告诉我我就补上）；下面这行想补充什么就加 -->
+          <h3>经济学院 · 硕士研究生 · 投资银行方向</h3>
+          <p>研一在读。</p>
+        </div>
+      </div>
+      <div class="edu-row">
+        <div class="edu-year">2022 — 2026</div>
+        <div>
+          <h3>中央财经大学 · 金融学院 · 金融学</h3>
+          <p>本科。毕业论文《数字普惠金融对城乡收入差距的影响——基于收入来源的路径分析》。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 06 爱好 ==================== -->
+  <section id="life">
+    <div class="head">
+      <div>
+        <p class="eyebrow">06 / Off the Clock</p>
+        <h2>不看书的时候，<br>我在<em>泳池</em>里。</h2>
+      </div>
+      <div>
+        <p>做研究需要长时间坐着，所以这些事对我挺重要的——它们让我从屏幕前站起来。</p>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="thumb lav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>
+          </svg>
+        </div>
+        <div class="kicker">Singing</div>
+        <h3>唱歌</h3>
+        <p>旋律一响就能放松下来，是写论文卡住时最有效的重启键。</p>
+      </div>
+      <div class="card">
+        <div class="thumb sage">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 8.5A2.5 2.5 0 0 1 5.5 6h1.6l1.2-1.8h7.4L16.9 6h1.6A2.5 2.5 0 0 1 21 8.5v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 16.5z"/>
+            <circle cx="12" cy="12.5" r="3.2"/>
+          </svg>
+        </div>
+        <div class="kicker">Photography</div>
+        <h3>摄影</h3>
+        <p>习惯把光线和日常存下来。看多了数据里的平均值，更想记住具体的某一刻。</p>
+      </div>
+      <div class="card">
+        <div class="thumb peach">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="5" r="2.3"/>
+            <path d="M2.5 12.4c1.9 0 1.9 1.5 3.8 1.5s1.9-1.5 3.8-1.5 1.9 1.5 3.8 1.5 1.9-1.5 3.8-1.5 1.9 1.5 3.8 1.5"/>
+            <path d="M2.5 17.4c1.9 0 1.9 1.5 3.8 1.5s1.9-1.5 3.8-1.5 1.9 1.5 3.8 1.5 1.9-1.5 3.8-1.5 1.9 1.5 3.8 1.5"/>
+          </svg>
+        </div>
+        <div class="kicker">Swimming</div>
+        <h3>游泳</h3>
+        <p>一圈一圈游完最舒服。水里的一个小时，什么也不用想。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 页脚 ==================== -->
+  <footer>
+    <span>© 2026 朱羿蓁</span>
+    <svg class="spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" aria-hidden="true">
+      <path d="M12 2.5v19M2.5 12h19M5.3 5.3l13.4 13.4M18.7 5.3 5.3 18.7"/>
+    </svg>
+  </footer>
+
+</div>
+</body>
+</html>
