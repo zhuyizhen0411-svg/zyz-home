@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>白酒财报 RAG 知识库 —— 一页结论</title>
+<style>
+  @page { size: A4; margin: 7.5mm 8.5mm; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Songti SC", "Noto Serif CJK SC", serif;
+    font-size: 7.35pt; line-height: 1.28; color:#1a1a1a; background:#fff;
+  }
+  h1 { font-size:11.8pt; margin:0 0 1mm; letter-spacing:.5px; }
+  .sub { font-size:7.25pt; color:#444; margin:0 0 1.5mm; }
+  .chain {
+    background:#f4f6f8; border-left:3px solid #2c5f8a; padding:1.6mm 2.4mm;
+    margin:0 0 1.5mm; font-size:7.35pt;
+  }
+  .chain b { color:#2c5f8a; font-size:8.1pt; }
+  h2 {
+    font-size:8.3pt; margin:1.4mm 0 0.6mm; padding:0 0 0.3mm;
+    border-bottom:0.4mm solid #d5dce3; color:#123;
+  }
+  h2 .n { color:#2c5f8a; }
+  p { margin:0 0 0.75mm; text-align:justify; }
+  table { width:100%; border-collapse:collapse; margin:0.4mm 0 0.8mm; font-size:6.95pt; }
+  th, td { border:0.25mm solid #cfd6dd; padding:0.35mm 0.8mm; text-align:left; vertical-align:top; }
+  th { background:#eef2f6; font-weight:600; }
+  td.k { white-space:nowrap; font-weight:600; }
+  .tag { display:inline-block; padding:0 .7mm; border-radius:1mm; font-size:6.85pt; }
+  .good { background:#e3f2e6; color:#1c6b33; }
+  .bad  { background:#fbe6e6; color:#a32020; }
+  .warn { background:#fdf3dc; color:#8a5a00; }
+  ul { margin:0.25mm 0 0.8mm; padding-left:3.2mm; }
+  li { margin-bottom:0.25mm; }
+  code { font-family:"SFMono-Regular",Menlo,monospace; font-size:6.85pt; background:#f2f4f6; padding:0 .5mm; }
+  .final {
+    margin-top:1.1mm; padding:1.1mm 1.8mm; background:#f7f9fb;
+    border:0.3mm solid #d5dce3; font-size:7.3pt;
+  }
+  .final .t { font-weight:700; color:#2c5f8a; margin-bottom:.8mm; }
+  .cols { display:flex; gap:3mm; }
+  .cols > div { flex:1; }
+</style>
+</head>
+<body>
+
+<h1>白酒财报 RAG 知识库 —— 一页结论</h1>
+<p class="sub">
+系统：12 家 A 股白酒上市公司 84 份年报/半年报（13,584 页 → 39,702 个文本块）本地解析建索引；
+向量 + BM25 混合召回；本地 4B 模型带出处作答；<b>每个数字可回溯到原文块、公司、年份、报告类型与页码</b>。
+</p>
+<div class="chain">
+实验链路：v1 基线 <b>3/10</b> → v1 优化后 <b>7/10</b> → v2 全新题 <b>4/10</b> → v2 通用兜底后 <b>7/10</b>
+</div>
+
+<h2><span class="n">1.</span> 第一版主要失败在哪</h2>
+<p>基线只答对 3 题，失败集中在<b>检索定向</b>，不是模型不会说话：</p>
+<table>
+  <tr><th class="k">失败</th><th>表现</th></tr>
+  <tr><td class="k">指标/口径定向缺失</td><td>问毛利率答营业收入；问「经销商已打款未确认收入」映射不到「合同负债」</td></tr>
+  <tr><td class="k">年报 / 半年报混召回</td><td>同一年两种报告并存时取到半年报的数当年度数，同比口径直接错</td></tr>
+  <tr><td class="k">全局问法没展开</td><td>「哪些白酒公司…」只召回 6/12 家，结论必然不完整</td></tr>
+  <tr><td class="k">表格读不出目标行</td><td>宽表里取到「分渠道小计行」而非合并口径（−1.08% vs 真值 −1.21%）</td></tr>
+  <tr><td class="k">跨公司覆盖不均</td><td>点到名的几家里，有的公司只召到 1 块且是无关块</td></tr>
+</table>
+<p>共同点：<b>答案所需的原文其实在库里，只是没被召回来；召错行比召不到更危险。</b></p>
+
+<h2><span class="n">2.</span> 做了哪些改进（五步串行，每步只改一个模块）</h2>
+<ul>
+  <li><b>指标定向</b>（<code>代码/指标规则.py</code>）：营收、合同负债、毛利率、净利润、产销量 5 组指标做同义扩展 + 加权 + <b>定向配额</b>（保证目标块至少占一半席位——加权救不回排几千名的块）。</li>
+  <li><b>报告期区分</b>（<code>代码/检索引擎.py</code>）：明确说「半年报」走硬过滤；只说年份时优先年报、不足时软加权，避免零召回。</li>
+  <li><b>全局路由</b>：三级正则识别「全部白酒公司 / 12 家 / 哪些公司」，展开为 12 家<b>逐家各召</b>，再轮转合并。</li>
+  <li><b>净利润规则</b>：补「归母净利润 / 净利润」口径，跨公司题每家用同一口径参数。</li>
+  <li><b>生成侧</b>：先按表头定位目标行再读数；单位照抄原文；跨公司先逐家列值与单位再比较；禁止自算合计。</li>
+</ul>
+<p>v1 正确率 <b>3/10 → 7/10</b>。</p>
+
+<h2><span class="n">3.</span> 哪些改进真正泛化（换题后依然成立）</h2>
+<ul>
+  <li><span class="tag good">泛化</span> <b>报告期识别</b>：v2 中 4 道涉及年份的题全部落对；Q3 只给「2025 年」而该公司年报与半年报都有 ROE，仍正确落到年报。</li>
+  <li><span class="tag good">泛化</span> <b>全局 12 家覆盖</b>：v2 两道全局题均为 12 家 × 3 块均匀分布，<code>coverage_ok=True</code>，「只召 6 家」未复发。</li>
+  <li><span class="tag good">泛化</span> <b>单位与格式</b>：v1 乱补「万元」的病没复发；「% 与百分点」「元/股」「元」都写对。</li>
+  <li><span class="tag good">泛化</span> <b>失败时不编造</b>：v2 三道检索失败题全部诚实答「材料不足」，零幻觉。</li>
+</ul>
+<p><b>泛化的是路由层（找哪家、找哪一期、找哪张表），不是指标层。</b></p>
+
+<h2><span class="n">4.</span> 哪些地方出现过拟合</h2>
+<p><span class="tag bad">过拟合</span> 指标定向严重依赖 <code>代码/指标规则.py</code> 的 <b>5 条白名单规则</b>。v2 三道失败题（存货、货币资金、销售费用）
+<b>全部在规则外，全部召不回来</b>；而 v1 里「跨公司对、全局对」靠的正是营收、毛利率、净利润——<b>全在白名单内</b>，换指标后跨公司 0/2、全局 0/2。</p>
+<p><b>结论</b>：v1 的 7/10 里真本事与「背题」约各占一半。系统学会的是「这几类指标怎么做题」，不是「怎么定位一个陌生会计科目」。
+净泛化提升只有 <b>+10pt（30%→40%）</b>，而 v1 内部提升是 <b>+40pt</b>。</p>
+
+<h2><span class="n">5.</span> 最后一轮：为什么用通用结构信号代替逐科目硬编码</h2>
+<p>继续给存货、货币资金、销售费用各写一条规则<b>只是把白名单加长，过拟合不会消失</b>——下一个没写过的科目照样崩。
+所以最后一轮改问一个更一般的问题：<b>「财报里，什么样的文本块才装着科目数据？」</b> 答案与科目无关，只与<b>报表结构</b>有关。
+新增 <code>代码/科目兜底.py</code>（<b>仅当五组规则都没命中时启用</b>）：</p>
+<table>
+  <tr><th>通用信号</th><th class="k">系数</th><th>作用</th></tr>
+  <tr><td>不是表格块（叙述段）</td><td class="k">×0.55</td><td>压掉「原因说明 / 会计政策」</td></tr>
+  <tr><td><b>没有任何千分位金额</b></td><td class="k"><b>×0.35</b></td><td>压掉「40、销售费用 单位：元」这类<b>空表头</b></td></tr>
+  <tr><td>科目行形状（汉字科目名 + 分隔符 + 千分位金额）</td><td class="k">×2.4</td><td>捞起真正带数字的行</td></tr>
+  <tr><td>主表表头（主要会计数据 / 三大报表 / 资产构成表）</td><td class="k">×2.2</td><td>优先主表，压附注明细</td></tr>
+  <tr><td>受限 / 抵押 / 子公司 / 关联方 / 会计政策</td><td class="k">×0.5</td><td>压掉非目标口径</td></tr>
+</table>
+<p>科目词典（约 80 条通用会计科目）<b>只做「写法 → 标准科目名」的归一，条目之间零权重差异</b>；跨公司题仍在每家公司内部独立执行同一套逻辑。</p>
+<p><b>效果</b>：规则外科目的真值块 <b>0/3 → 3/3</b>，其中 Q6「压在仓库里还没卖出去的那些货」<b>压根没识别出科目名</b>，靠实义词 + 结构信号照样捞中；
+v2 正确率 <b>4/10 → 7/10</b>，且对规则内题目<b>零干扰</b>（Q10 召回块序列与优化前完全一致）。
+<b>这轮的收获不是多对 3 道题，而是证明了「用结构信号替代逐科目硬编码」这条路走得通。</b></p>
+
+<h2><span class="n">6.</span> 老师反馈后的补强（第 09–10 步）</h2>
+<ul>
+  <li><span class="tag good">分层抽样</span> 复查发现分层抽样<b>已经在做</b>（跨公司题逐家检索、再轮转合并），硬伤是每家只分到 <b>2 块</b>——覆盖到 12/12 但材料太薄：问「12 家现金流前三」时，泸州老窖那 2 块里没有现金流数据被整个漏掉，第三名答错。把总量上限 24 → 48，<b>每家 3 块</b>，并对「召到的块里没有『目标科目名 + 金额』」的公司<b>二次补召</b>。</li>
+  <li><span class="tag good">同义词扩展</span> 原先只有精确子串匹配，词典外的口语说法抓瞎：「账上现金」召到现金分红、「卖酒收到的现金」召到每 10 股派息。新增 <code>代码/查询改写.py</code>：正则把口语归一到标准科目名（账上现金→货币资金、打款未发货→合同负债、压仓库的货→存货、赊账→应收账款…），再补同族近义词作为<b>第三路 BM25</b>。四类全局问法里「仍无目标科目的公司」<b>全部清零</b>。</li>
+  <li><span class="tag good">校验器误判</span> 末段排名 / 汇总句复述前文已引过证的数字、自己不再带 <code>[n]</code>，被判「材料不足」→ 答案全对却自相矛盾地追加「不予采信」。改为：先在「本回答引用过的全部块」里找，找到即<b>继承前文出处</b>；两处都找不到才报材料不足，<b>防幻觉底线不变</b>（编造数字仍被拦截）。</li>
+</ul>
+<p>回归：v2 仍 <b>7/10</b>（数值正确 <b>10/10</b>），Q10 问题句 <b>8 → 0</b>、可追溯数 <b>42/61 → 52/52</b>；v1 十题 <b>7/10 无退化</b>。</p>
+
+<h2><span class="n">7.</span> 最终仍存在的局限</h2>
+<table>
+  <tr><th class="k">局限</th><th>表现</th><th class="k">归因</th></tr>
+  <tr><td class="k">单位判断</td><td>Q8 三家销售费用数值与结论全对，单位却写成「万元」（原文为元），模型还自辩「按财报惯例统一处理」</td><td class="k">生成侧</td></tr>
+  <tr><td class="k">正负号判断</td><td>Q10 把 +7.07%、+7.80% 判成「下滑」，真下滑 4 家全中却多报 2 家；同一份答案两次排序还不一致</td><td class="k">生成侧</td></tr>
+  <tr><td class="k">数字写法归一化</td><td>Q2 原文「每 10 股派 <b>50 元</b>」而模型写「50.00元」；Q9 原文 <b>31,136,736,628.58</b> 元而模型写「311.37亿元」——补零与四舍五入到亿元后无法反查，数值正确仍被判「未定位」</td><td class="k">校验器</td></tr>
+  <tr><td class="k">可追溯 ≠ 取对行</td><td>校验器只能证明「数字来自这块」，不能证明「取的是正确的那一行」。第 09 步加厚材料 + 二次补召后 Q9 已答对，但机制上仍无保证</td><td class="k">校验器边界</td></tr>
+</table>
+<p>这四处都在<b>生成侧与校验器</b>，不在检索环节；按要求停止开发，未做修改，作为已知局限保留。</p>
+
+<div class="final">
+  <div class="t">一句话总结</div>
+  先测后改、每题留痕，才看得清「7/10」里有多少是真本事：路由层（找哪家 / 哪一期 / 哪张表）的改进<b>真的泛化</b>了，
+  指标层的白名单规则<b>只是把题背会了</b>；最后一轮用「科目无关的通用结构信号」兜底，才把泛化能力补回来（未知指标召回 0/3 → 3/3），
+  剩余缺陷全部集中在<b>单位判断、正负号判断、数字写法归一化</b>这三处生成侧 / 校验器问题上。
+</div>
+
+</body>
+</html>

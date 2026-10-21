@@ -1,0 +1,74 @@
+{
+  "freeze_version": 1,
+  "frozen_at": "2026-10-21T09:42:15+08:00",
+  "rule": "先写金标并冻结，再跑系统；冻结后看到的系统表现只报告，不回头改题。若某题确实有错，只能连同勘误说明一起重新冻结，并在逐题记录里注明改过什么。",
+  "hash_scheme": "sha256(json.dumps(按 id/question/caliber/gold/source 排序序列化))",
+  "banks": [
+    {
+      "file": "题库1-最初的10道题.json",
+      "batch": "第一批",
+      "role": "开发题",
+      "status": "连续用于基线测（第01步）和前五步优化（第02–06步），系统是照着它的错题改的",
+      "used_for": "第01–06步",
+      "path": "数据/评测/题库/题库1-最初的10道题.json",
+      "n_questions": 10,
+      "sha256": "0b59e79d851a7a0d21f8ebbeadeb8f24d022fae28af2f2af87c27f80b3e9c1cd",
+      "questions": {
+        "1": "6d42645f00b76625e0fd93b08a98e73d625d8e8c25c5262dd8ca874b315cbaa3",
+        "2": "da53ea56d76041d4c3ebc0a928363248dc9c41718b61630c487824b36dd89d32",
+        "3": "c656220e349d472e8b1322cc9788e8206826b9bc6c76e24b01c3cb923778d13d",
+        "4": "7b78659c308381906320c211d44364c2dd27cef00af7109f2829c65c97c55a6e",
+        "5": "432428d7110089675f0efc2844c68ed562caa11ef8ae4061f73f64709f7b27ea",
+        "6": "3067d4aac48077856340a1aaa25aaa38526e67834476a46ca098bee0e9aee789",
+        "7": "038dc426b1d194f64b279e8ea4bca99e8363ec4fd18617ca5627f094102f299a",
+        "8": "a3aeff2edfc5b9df8fc109b070e3d7a57788d6bb0d2ab547fddc32a83dd5a0c7",
+        "9": "1d2ae97e89abea6cc729c1ca7b7936b0015258e5425632976c151b45444c6a37",
+        "10": "730104daee27b87454fd0b89936634052f3f1a49cbf55775c8cdfdb07920fbff"
+      }
+    },
+    {
+      "file": "题库2-全新10道题.json",
+      "batch": "第二批",
+      "role": "开发题（原检验题，已污染）",
+      "status": "第07步作为检验题测得 4/10；随后第08–10步用它反向调参（科目兜底、查询改写、每家补召），再用它复测得到 7/10。这批题因此不再是「没见过的新题」，按开发题看待",
+      "used_for": "第07–10步",
+      "path": "数据/评测/题库/题库2-全新10道题.json",
+      "n_questions": 10,
+      "sha256": "79c9450d64b299a1de33ce5dab7eecef09bb1c75c4e473a455f3ec765efbd393",
+      "questions": {
+        "1": "0a4db5cea8cd2e786001ce02d8fbba369414a981d7ec4d337cc15970932d45b0",
+        "2": "9bbb77e8e599360799c4ebb55d8d3f43feec0a2797856c439e43c0922bc6e65d",
+        "3": "4db2fbcc0ea210ca8f7f390767bc2e52eb032b2991648a1f442cf5154b826ef6",
+        "4": "ce00014428fbe7326c061ee006a29795f4e11d440b750f7f9a58ddae3e72d68e",
+        "5": "73b74661c5df299f72bda6e3517fe0b851e96832b8cf2b3def5ec31d1a492320",
+        "6": "524ee70dbb055dc0829ec84c42db4b2265018583778400c3d9ad84e86451accc",
+        "7": "23ecc633f4105d19195bfb2cafdbd9141a03b18f3c68a97365f4ee3ecbec9efa",
+        "8": "28a05b158bcdbfe0238308036bb3ad6f8458913c4c5adb1d2505fd3832a1b304",
+        "9": "61252bb8bbecec19ba4daf9b38d3d8e8159428c931a9953adbbff0518b9fe721",
+        "10": "00a543d7cb7d40428439430ea41ab6ca86c4a70fd1ff52e0aa1c6b560af9792a"
+      }
+    },
+    {
+      "file": "题库3-冻结金标-10道题.json",
+      "batch": "第三批",
+      "role": "检验题",
+      "status": "金标逐条抄自原文并冻结；出题、写金标时未运行系统，系统未见过这批题",
+      "used_for": "第11步（修复后检验）",
+      "path": "数据/评测/题库/题库3-冻结金标-10道题.json",
+      "n_questions": 10,
+      "sha256": "effd7e3ae21ddd2e171390fca9ff27a121a34cdf622a4f53a96409c83e5fc7ff",
+      "questions": {
+        "1": "ef7111ee5eccdefbee5fbf97d5f947d754310704c1bdf8e478e6a7691c4e6c71",
+        "2": "30c32209da6a08d6900b1f189ce4cdc68cc1f9d624b3b306e91528c9e672d6e6",
+        "3": "762ccc5f895fc17594c36a48a29b54eb61fa8fbdea8a7427ba7bcc2ba3520a48",
+        "4": "69612b3d3d09d3c0d93f77a8ce5739f58a3e2d10a14dbfba51b9bed948d19674",
+        "5": "580699207099a8174975fc0da6edceb6f4371221c91636daea226821d7f52e2d",
+        "6": "7e93b93f7c04f05cd8b0265775101668e1feb4e9e14003c197dbb8154f6bf993",
+        "7": "444bffdde02949355e108d61969f3cd60d9b498720335d5c2bf5c9e5ca8b4485",
+        "8": "c9655354fb2e9abbd395752a4bffbbd6f41fffa756e8227385314adde8bf996a",
+        "9": "3b5db6bd049b7c15685be316197a37eea8ddb95bb5a3b49f67644b659f4fa914",
+        "10": "581500b0020bb4d35284c0b170f8eb8e6af5c42939ff2a8c39db870385cf5a26"
+      }
+    }
+  ]
+}
